@@ -55,20 +55,31 @@ const Cart = () => {
   };
 
   const deleteFromCart = (idx: number) => {
-    setTotal(total - cartDetails[idx].value);
+
+      cartDetails.map(obj => {
+        if (obj.index === idx) {
+          setTotal(total-obj.value);
+        }
+        return obj;
+      })
+
     const value = cartDetails.filter(item => item.index !== idx);
     console.log('Value', value);
     setCartDetails(value);
   };
   const refresh = () => {
     setTotal(0);
-    setCartDetails(current =>
-      current.map(obj => {
-        return {...obj, value: 0, active: false};
-
-        return obj;
-      }),
-    );
+    setCartDetails([
+      {
+        number: 'Zero',
+        index: 0,
+        value: 0,
+        active: true,
+      },
+      {number: 'Zero', index: 1, value: 0, active: true},
+      {number: 'Zero', index: 2, value: 0, active: true},
+      {number: 'Zero', index: 3, value: 0, active: true},
+    ]);
   };
   const recycle = () => {
     setCartDetails([]);
@@ -93,7 +104,8 @@ const Cart = () => {
           style={styles.btn}
           icon="recycle"
           mode="contained"
-          onPress={() => recycle()}></Button>
+          onPress={() => recycle()}>
+        </Button>
       </View>
 
       <FlatList
