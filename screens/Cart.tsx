@@ -58,7 +58,7 @@ const Cart = () => {
 
       cartDetails.map(obj => {
         if (obj.index === idx) {
-          setTotal(total-obj.value);
+          setTotal(total-obj.value)
         }
         return obj;
       })
@@ -69,19 +69,16 @@ const Cart = () => {
   };
   const refresh = () => {
     setTotal(0);
-    setCartDetails([
-      {
-        number: 'Zero',
-        index: 0,
-        value: 0,
-        active: true,
-      },
-      {number: 'Zero', index: 1, value: 0, active: true},
-      {number: 'Zero', index: 2, value: 0, active: true},
-      {number: 'Zero', index: 3, value: 0, active: true},
-    ]);
+    setCartDetails(current =>
+      current.map(obj => {
+        return {...obj, value: 0, active: true};
+
+        return obj;
+      }),
+    );
   };
   const recycle = () => {
+    setTotal(0);
     setCartDetails([]);
   };
 
