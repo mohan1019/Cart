@@ -87,17 +87,13 @@ const Cart = () => {
           style={styles.btn}
           icon="refresh"
           mode="contained"
-          onPress={() => refresh()}>
-          {' '}
-        </Button>
+          onPress={() => refresh()}></Button>
         <Button
           buttonColor="#2a6dd1"
           style={styles.btn}
           icon="recycle"
           mode="contained"
-          onPress={() => recycle()}>
-          {' '}
-        </Button>
+          onPress={() => recycle()}></Button>
       </View>
 
       <FlatList
@@ -117,7 +113,6 @@ const Cart = () => {
               style={styles.btn}
               icon="plus"
               onPress={() => addToCart(item.index)}>
-              {' '}
             </Button>
             <Button
               buttonColor={item.active ? '#328c94' : '#19b7bd'}
@@ -125,7 +120,6 @@ const Cart = () => {
               icon="minus"
               mode="contained"
               onPress={() => minusFromCart(item.index)}>
-              {' '}
             </Button>
             <Button
               buttonColor="#c72d28"
@@ -133,7 +127,6 @@ const Cart = () => {
               icon="delete"
               mode="contained"
               onPress={() => deleteFromCart(item.index)}>
-              {' '}
             </Button>
           </View>
         )}
@@ -172,7 +165,8 @@ const styles = StyleSheet.create({
     lineHeight: 35,
     marginTop: 11,
     marginLeft: 10,
-    marginRight: 10
+    marginRight: 10,
+    backgroundColor:'#009999'
   },
   appView: {
     flexDirection: 'row',
