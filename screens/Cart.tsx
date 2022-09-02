@@ -4,11 +4,19 @@ import {Button} from 'react-native-paper';
 import {FlatList} from 'react-native';
 import {StyleSheet} from 'react-native';
 import { Icon } from 'react-native-elements';
+import { useWindowDimensions } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
+
 const Cart = () => {
+ 
+  const [dim, setDim] = useState({
+    width : 0,
+    height : 0
+  });
   const [total, setTotal] = useState(0);
   const [cartDetails, setCartDetails] = useState([
     {
@@ -64,7 +72,6 @@ const Cart = () => {
       })
 
     const value = cartDetails.filter(item => item.index !== idx);
-    console.log('Value', value);
     setCartDetails(value);
   };
   const refresh = () => {
@@ -82,26 +89,35 @@ const Cart = () => {
     setCartDetails([]);
   };
 
+  const setLayout =() =>{
+    const Height = Dimensions.get('window').height;
+    const width = Dimensions.get('window').width;
+    setDim({
+        width: width,
+        height: Height
+    }) 
+  }
+
   return (
-    <View style={{backgroundColor: '#c3f7f6', flex: 1}}>
-      <View style={styles.TopView}>
+    <SafeAreaView style={ dim.height> dim.width ? styles.backgroundPotrait : styles.backgroundLandscape} onLayout={()=>{setLayout()}} >
+      <View style={dim.height> dim.width ? styles.TopView: styles.TopViewLandscape}>
       <Icon style={styles.icon} name="cart" type="ionicon" color="#000" />
       <Text style={styles.titleText}>{total}</Text>
-      <Text style={{fontWeight: 'bold', fontSize: 20, marginTop: 14}}>Items</Text>
+      <Text style={styles.items}>Items</Text>
       </View>
-      <View style={styles.appViewAbove}>
+      <View style={dim.height> dim.width ? styles.appViewAbove: styles.TopViewLandscape}>
         <Button
           buttonColor="green"
           style={styles.btn}
           icon="refresh"
           mode="contained"
-          onPress={() => refresh()}></Button>
+          onPress={refresh}></Button>
         <Button
           buttonColor="#2a6dd1"
           style={styles.btn}
           icon="recycle"
           mode="contained"
-          onPress={() => recycle()}>
+          onPress={recycle}>
         </Button>
       </View>
 
@@ -128,7 +144,7 @@ const Cart = () => {
               style={styles.btn}
               icon="minus"
               mode="contained"
-              onPress={() => minusFromCart(item.index)}>
+              onPress={()=>minusFromCart(item.index)}>
             </Button>
             <Button
               buttonColor="#c72d28"
@@ -140,73 +156,99 @@ const Cart = () => {
           </View>
         )}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default Cart;
 
 const styles = StyleSheet.create({
+  
   text: {
     textAlign: 'center',
     color: '#000',
-    fontSize: 20,
+    fontSize: width/18,
     fontWeight: 'bold',
     borderColor: 'black',
-    borderWidth: 1,
+    borderWidth: width/220,
     width: width / 5,
     height: Height / 20,
-    borderRadius: 10,
-    marginTop: 11,
-    marginRight: 10,
-    lineHeight: 35
+    borderRadius: width/40,
+    marginTop: Height/75,
+    marginRight: width/30 ,
+    lineHeight: Height/20
   },
   titleText: {
     textAlign: 'center',
     color: '#000',
-    fontSize: 20,
+    fontSize: width/18,
     fontWeight: 'bold',
     borderColor: 'black',
-    borderWidth: 1,
+    borderWidth: width/250,
     width: width / 5,
     height: Height / 20,
-    borderRadius: 20,
-    lineHeight: 35,
-    marginTop: 11,
-    marginLeft: 10,
-    marginRight: 10,
+    borderRadius: width/20,
+    lineHeight: Height/20,
+    marginTop: Height/65,
+    marginLeft: width/40,
+    marginRight: width/40,
     backgroundColor:'#009999'
   },
   appView: {
     flexDirection: 'row',
     alignSelf: 'center',
-    marginBottom: 20,
+    marginBottom: Height/50,
   },
   TopView: {
-    marginTop: 50,
+    marginTop: Height/10,
     alignContent: 'center',
     flexDirection: 'row',
     alignSelf: 'center',
-    marginBottom: 20,
+    marginBottom: Height/40,
   },
   appViewAbove: {
     flexDirection: 'row',
     alignSelf: 'center',
-    marginTop:  5,
-    marginBottom: 30,
+    marginTop:  Height/50,
+    marginBottom: Height/30,
   },
   btn: {
     width: width / 12,
     color: 'red',
-    borderRadius: 10,
-    margin: 10,
-    marginLeft: 5,
+    borderRadius: width/40,
+    margin: width/40,
+    marginLeft: width/50,
   },
   icon: {
     width: width / 12,
     color: 'red',
-    borderRadius: 10,
-    marginTop: 15,
-    marginLeft: 5,
-  }
+    borderRadius: width/40,
+    marginTop: width/20,
+    marginLeft: width/60,
+  },
+  items: {
+    fontWeight: 'bold',
+    fontSize: width/15, 
+    marginTop: Height/60
+  },
+  backgroundPotrait: {
+    backgroundColor: '#c3f7f6', 
+    flex: 1,
+    flexDirection: 'column',
+  },
+  backgroundLandscape: {
+    backgroundColor: '#c3f7f6', 
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  TopViewLandscape: {
+    marginTop: Height/20,
+    alignContent: 'center',
+    flexDirection: 'row',
+    alignSelf: 'center',
+    marginBottom: Height/40,
+  },
+
 });
